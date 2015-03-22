@@ -1,7 +1,7 @@
 var CommandHub = require('./lib/command_hub'),
     EventHub = require('./lib/event_hub');
 
-var FlexFlux = (function () {
+var FlexFlux = function () {
 
     /**
      * Place for events
@@ -31,6 +31,6 @@ var FlexFlux = (function () {
         );
     }
 
-})();
+};
 
 module.exports = FlexFlux;
