@@ -16,6 +16,15 @@ var FlexFlux = function () {
     this.CommandHub = new CommandHub(this.EventHub);
 
     /**
+     * Add a command collection
+     * @param namespace
+     * @param commandCollection
+     */
+    this.add = function (namespace, commandCollection) {
+        this.CommandHub.register(namespace, commandCollection);
+    };
+
+    /**
      * Register a new callback for an event
      * @param namespace
      * @param eventName
