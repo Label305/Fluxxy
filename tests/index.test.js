@@ -17,4 +17,19 @@ describe('FlexFlux accessor', function () {
         expect(commandCollection.foo).to.be('bar');
     });
 
+    it('be able to find command collections', function () {
+        //Given
+        var flexFlux = new FlexFlux();
+
+        //When
+        var CommandCollection = function (events) {
+            this.foo = 'bar';
+        };
+        flexFlux.command('User', CommandCollection);
+        var commandCollection = flexFlux.command('User');
+
+        //Then
+        expect(commandCollection.foo).to.be('bar');
+    });
+
 });
