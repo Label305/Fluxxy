@@ -110,4 +110,4 @@ var TodoApp = React.createClass({
 });
 
 //Pass flux to the component
-React.render(<TodoApp flux={flexFlux.flux()} />, document.getElementById("app"));
+React.render(<TodoApp flux={Flux.flux()} />, document.getElementById("app"));
