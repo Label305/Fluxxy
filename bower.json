@@ -1,0 +1,17 @@
+{
+  "name": "Fluxxy",
+  "main": "build/fluxxy.js",
+  "version": "0.1.0",
+  "homepage": "https://github.com/Label305/Fluxxy",
+  "authors": [
+    "Joris Blaak <joris@label305.com>"
+  ],
+  "license": "Apache 2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
