@@ -53,10 +53,15 @@ var TodoApp = React.createClass({
             todos: this.props.flux.store('Todo').all()
         };
     },
+    handleSomething: function() {
+        this.props.flux.commands('Todo').add({
+            content: 'Dummy todo'
+        });
+    },
     render: function () {
         var todos = this.state.todos.map(function (todo) {
-            return <li>{todo.content}</li>;
-        });
+            return <li onClick={this.handleSomething}>{todo.content}</li>;
+        }.bind(this);
         return <div>
             <ul>{todos}</ul>
         </div>;
@@ -81,8 +86,6 @@ where you can dump your state, since you'll always will implement methods such a
 
 Only thing left is to get data into you (React) views, by including the a watching Mixin, where you can specify on which
 stores it should watch.
-
-
 
 License
 ---------
