@@ -1,3 +1,5 @@
 .idea
 node_modules
 build
+examples/basic-todo/app/build.js
+examples/basic-todo/app/build.js.map

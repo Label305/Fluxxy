@@ -27,7 +27,7 @@ var FlexFlux = function () {
      * Place for stores
      * @type {StoreHub}
      */
-    this.StoreHub = new StoreHub(this.Flux);
+    this.StoreHub = new StoreHub(this.Flux, this.EventHub);
 
     /**
      * Set/get a commmand collection

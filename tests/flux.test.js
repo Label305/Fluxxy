@@ -38,6 +38,8 @@ describe('Flux', function () {
 
         //Register a store that will tell us it has changed
         var UserStore = function (store) {
+            this.construct = function () {
+            };
             this.add = function () {
                 store.changed();
             }
@@ -49,6 +51,7 @@ describe('Flux', function () {
             foo: 'bar'
         };
         var mixin = flexFlux.Flux.watch(['User']);
+        mixin.componentDidMount();
         mixin.getStoreState = function () {
             return {
                 foo: 'blub'
@@ -63,6 +66,6 @@ describe('Flux', function () {
 
         //Then
         expect(dataInState.foo).to.be('blub');
-
     });
+
 });

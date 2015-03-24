@@ -1,10 +1,4 @@
 /**
- * @jsx React.DOM
- */
-var FlexFlux = require('../../../');
-var React = require('react');
-
-/**
  * The TodoStore will receive our FlexFlux generic store as first param
  * @param store
  * @constructor
@@ -16,7 +10,7 @@ var TodoStore = function (store) {
      * @param events
      */
     this.construct = function (events) {
-        events.on('add', this.add);
+        events.on('Todo', 'add', this.add);
     };
 
     /**
@@ -57,13 +51,28 @@ var TodoCommands = function (events) {
 };
 
 /**
+ * How we initialize the FlexFlux lib
+ * @type {FlexFlux}
+ */
+var FlexFlux = require('../../../index');
+var flexFlux = new FlexFlux();
+
+//Register command collections for certain namespaces
+flexFlux.command('Todo', TodoCommands);
+
+//Register store
+flexFlux.store('Todo', TodoStore);
+
+/**
  * The component we will be rendering into the DOM
  */
+var React = require('react');
 var TodoApp = React.createClass({
-    mixins: [this.props.flux.watch(['Todo'])],
-    getStateFromFlux: function () {
+    mixins: [flexFlux.flux().watch(['Todo'])],
+    getStoreState: function () {
         return {
-            todos: this.props.flux.store('Todo').all()
+            todos: this.props.flux.store('Todo').all(),
+            num: this.props.flux.store('Todo').all().length
         };
     },
     getInitialState: function () {
@@ -76,7 +85,8 @@ var TodoApp = React.createClass({
             content: event.target.value
         });
     },
-    handleSubmit: function () {
+    handleSubmit: function (event) {
+        event.preventDefault();
         this.props.flux.command('Todo').add({
             content: this.state.content
         });
@@ -89,6 +99,7 @@ var TodoApp = React.createClass({
             return <li>{todo.content}</li>;
         });
         return <div>
+            <h1>{'Todo (' + this.state.num + ')'}</h1>
             <ul>{todos}</ul>
             <br/>
             <form onSubmit={this.handleSubmit}>
@@ -97,18 +108,6 @@ var TodoApp = React.createClass({
         </div>;
     }
 });
-
-/**
- * How we initialize the FlexFlux lib
- * @type {FlexFlux}
- */
-var flexFlux = new FlexFlux();
-
-//Register command collections for certain namespaces
-flexFlux.command('Todo', TodoCommands);
-
-//Register store
-flexFlux.store('Todo', TodoStore);
 
 //Pass flux to the component
 React.render(<TodoApp flux={flexFlux.flux()} />, document.getElementById("app"));

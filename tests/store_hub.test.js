@@ -9,6 +9,8 @@ describe('StoreHub', function () {
         var storeHub = flexFlux.StoreHub;
 
         var UserStore = function (store) {
+            this.construct = function () {
+            };
             this.foo = 'bar';
         };
 
