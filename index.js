@@ -3,7 +3,7 @@ var Flux = require('./lib/flux'),
     EventHub = require('./lib/event_hub'),
     StoreHub = require('./lib/store_hub');
 
-var FlexFlux = function () {
+var Fluxxy = function () {
 
     /**
      * Here all Fluxy logic happens, to couple Stores with React
@@ -54,8 +54,8 @@ var FlexFlux = function () {
     };
 
     /**
-     * Get FlexFlux mixin
-     * @return FlexFluxMixin
+     * Get Fluxxy mixin
+     * @return FluxxyMixin
      */
     this.flux = function () {
         return this.Flux;
@@ -71,4 +71,4 @@ var FlexFlux = function () {
     }
 };
 
-module.exports = FlexFlux;
+module.exports = Fluxxy;

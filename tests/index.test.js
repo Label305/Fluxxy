@@ -1,17 +1,17 @@
-var FlexFlux = require('../');
+var Fluxxy = require('../');
 
 var expect = require('expect.js');
-describe('FlexFlux accessor', function () {
+describe('Fluxxy accessor', function () {
 
     it('be able to register command collections', function () {
         //Given
-        var flexFlux = new FlexFlux();
+        var fluxxy = new Fluxxy();
 
         //When
         var CommandCollection = function (events) {
             this.foo = 'bar';
         };
-        var commandCollection = flexFlux.command('User', CommandCollection);
+        var commandCollection = fluxxy.command('User', CommandCollection);
 
         //Then
         expect(commandCollection.foo).to.be('bar');
@@ -19,14 +19,14 @@ describe('FlexFlux accessor', function () {
 
     it('be able to find command collections', function () {
         //Given
-        var flexFlux = new FlexFlux();
+        var fluxxy = new Fluxxy();
 
         //When
         var CommandCollection = function (events) {
             this.foo = 'bar';
         };
-        flexFlux.command('User', CommandCollection);
-        var commandCollection = flexFlux.command('User');
+        fluxxy.command('User', CommandCollection);
+        var commandCollection = fluxxy.command('User');
 
         //Then
         expect(commandCollection.foo).to.be('bar');

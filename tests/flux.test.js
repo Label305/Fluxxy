@@ -1,12 +1,12 @@
-var FlexFlux = require('../');
+var Fluxxy = require('../');
 
 var expect = require('expect.js');
 describe('Flux', function () {
 
     it('should set the stores', function () {
         //Given
-        var flexFlux = new FlexFlux();
-        var flux = flexFlux.Flux;
+        var fluxxy = new Fluxxy();
+        var flux = fluxxy.Flux;
 
         //When
         var m = flux.watch(['User']);
@@ -18,8 +18,8 @@ describe('Flux', function () {
 
     it('should not pass the mixin by reference', function () {
         //Given
-        var flexFlux = new FlexFlux();
-        var flux = flexFlux.Flux;
+        var fluxxy = new Fluxxy();
+        var flux = fluxxy.Flux;
 
         //When
         var firstMixin = flux.watch(['User']);
@@ -34,7 +34,7 @@ describe('Flux', function () {
 
     it('should set the state fetched from `getStoreState`', function () {
         //Given
-        var flexFlux = new FlexFlux();
+        var fluxxy = new Fluxxy();
 
         //Register a store that will tell us it has changed
         var UserStore = function (store) {
@@ -44,13 +44,13 @@ describe('Flux', function () {
                 store.changed();
             }
         };
-        flexFlux.store('User', UserStore);
+        fluxxy.store('User', UserStore);
 
         //Mock the methods that are part of the flux state
         var dataInState = {
             foo: 'bar'
         };
-        var mixin = flexFlux.Flux.watch(['User']);
+        var mixin = fluxxy.Flux.watch(['User']);
         mixin.componentDidMount();
         mixin.getStoreState = function () {
             return {
@@ -62,7 +62,7 @@ describe('Flux', function () {
         };
 
         //When
-        flexFlux.store('User').add();
+        fluxxy.store('User').add();
 
         //Then
         expect(dataInState.foo).to.be('blub');

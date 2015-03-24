@@ -1,4 +1,4 @@
-var FlexFlux = require('../'),
+var Fluxxy = require('../'),
     Store = require('../lib/store');
 
 var expect = require('expect.js');
@@ -9,10 +9,10 @@ describe('Store', function () {
         var obj = {
             foo: 'bar'
         };
-        var flexFlux = new FlexFlux();
+        var fluxxy = new Fluxxy();
 
         //When
-        var store = new Store('MyNamespace', flexFlux.flux());
+        var store = new Store('MyNamespace', fluxxy.flux());
         store.add(obj);
         var objects = store.all();
 

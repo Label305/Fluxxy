@@ -1,12 +1,12 @@
-var FlexFlux = require('../');
+var Fluxxy = require('../');
 
 var expect = require('expect.js');
 describe('EventHub', function () {
 
     it('should allow for registering callbacks', function () {
         //Given
-        var flexFlux = new FlexFlux();
-        var eventHub = flexFlux.EventHub;
+        var fluxxy = new Fluxxy();
+        var eventHub = fluxxy.EventHub;
 
         //When
         eventHub.on('User', 'update', function (data) {
@@ -20,8 +20,8 @@ describe('EventHub', function () {
     it('should dispatch to registered callbacks', function () {
 
         //Given
-        var flexFlux = new FlexFlux();
-        var eventHub = flexFlux.EventHub;
+        var fluxxy = new Fluxxy();
+        var eventHub = fluxxy.EventHub;
 
         var foo = '';
         eventHub.on('User', 'update', function (data) {
@@ -40,8 +40,8 @@ describe('EventHub', function () {
     it('should not dispatch to other callbacks', function () {
 
         //Given
-        var flexFlux = new FlexFlux();
-        var eventHub = flexFlux.EventHub;
+        var fluxxy = new Fluxxy();
+        var eventHub = fluxxy.EventHub;
 
         var foo = 'meh';
         eventHub.on('User', 'add', function (data) {

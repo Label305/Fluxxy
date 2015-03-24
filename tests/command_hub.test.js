@@ -1,12 +1,12 @@
-var FlexFlux = require('../');
+var Fluxxy = require('../');
 
 var expect = require('expect.js');
 describe('CommandHub', function () {
 
     it('should be able to register new command collections', function () {
         //Given
-        var flexFlux = new FlexFlux();
-        var commandHub = flexFlux.CommandHub;
+        var fluxxy = new Fluxxy();
+        var commandHub = fluxxy.CommandHub;
 
         //When
         var CommandCollection = function () {
@@ -19,8 +19,8 @@ describe('CommandHub', function () {
 
     it('should be able to find a registered command collection', function () {
         //Given
-        var flexFlux = new FlexFlux();
-        var commandHub = flexFlux.CommandHub;
+        var fluxxy = new Fluxxy();
+        var commandHub = fluxxy.CommandHub;
 
         //When
         var CommandCollection = function () {

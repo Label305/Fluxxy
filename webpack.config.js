@@ -7,7 +7,7 @@ module.exports = {
     output: {
         path: __dirname + "/build",
         filename: "flex_flux.js",
-        library: "FlexFlux",
+        library: "Fluxxy",
         libraryTarget: "umd"
     },
     devtool: "source-map"

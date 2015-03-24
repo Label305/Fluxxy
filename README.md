@@ -1,4 +1,4 @@
-FlexFlux
+Fluxxy
 ====
 
 More beautiful and scalable implementation of the 
@@ -13,7 +13,7 @@ Usage
 ----
 
 So, you've read about the Flux architecture. That means, you know about the corner 
-stones: Actions, Dispatching, Stores and Views. FlexFlux also has those, however to make life easier and more scaleable
+stones: Actions, Dispatching, Stores and Views. Fluxxy also has those, however to make life easier and more scaleable
 we have mulitple collections of commands instead of a mind bogglingly long list of actions. 
 Which are tied to stores using a namespace.
 
@@ -69,10 +69,10 @@ var TodoApp = React.createClass({
 });
 ```
 
-FlexFlux!
+Fluxxy!
 ```
-var FlexFlux = require('../../../index');
-window.Flux = new FlexFlux();
+var Fluxxy = require('../../../index');
+window.Flux = new Fluxxy();
 Flux.command('Todo', TodoCommands);
 Flux.store('Todo', TodoStore);
 ```

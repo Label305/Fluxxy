@@ -1,5 +1,5 @@
 /**
- * The TodoStore will receive our FlexFlux generic store as first param
+ * The TodoStore will receive our Fluxxy generic store as first param
  * @param store
  * @constructor
  */
@@ -51,11 +51,11 @@ var TodoCommands = function (events) {
 };
 
 /**
- * How we initialize the FlexFlux lib
- * @type {FlexFlux}
+ * How we initialize the Fluxxy lib
+ * @type {Fluxxy}
  */
-var FlexFlux = require('../../../index');
-window.Flux = new FlexFlux();
+var Fluxxy = require('../../../index');
+window.Flux = new Fluxxy();
 
 //Register command collections for certain namespaces
 Flux.command('Todo', TodoCommands);

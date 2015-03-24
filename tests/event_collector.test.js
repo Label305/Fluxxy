@@ -1,4 +1,4 @@
-var FlexFlux = require('../'),
+var Fluxxy = require('../'),
     EventCollector = require('../lib/event_collector');
 
 var expect = require('expect.js');
