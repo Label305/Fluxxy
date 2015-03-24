@@ -32,4 +32,37 @@ describe('Flux', function () {
         expect(secondMixin.stores[0]).to.be('Team');
     });
 
+    it('should set the state fetched from `getStoreState`', function () {
+        //Given
+        var flexFlux = new FlexFlux();
+
+        //Register a store that will tell us it has changed
+        var UserStore = function (store) {
+            this.add = function () {
+                store.changed();
+            }
+        };
+        flexFlux.store('User', UserStore);
+
+        //Mock the methods that are part of the flux state
+        var dataInState = {
+            foo: 'bar'
+        };
+        var mixin = flexFlux.Flux.watch(['User']);
+        mixin.getStoreState = function () {
+            return {
+                foo: 'blub'
+            };
+        };
+        mixin.setState = function (data) {
+            dataInState = data;
+        };
+
+        //When
+        flexFlux.store('User').add();
+
+        //Then
+        expect(dataInState.foo).to.be('blub');
+
+    });
 });

@@ -25,7 +25,7 @@ describe('Store', function () {
         //Given
         var Flux = function () {
             this.changedCalled = false;
-            this.changed = function () {
+            this._changed = function () {
                 this.changedCalled = true;
             }
         };
