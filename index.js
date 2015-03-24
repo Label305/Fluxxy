@@ -59,6 +59,15 @@ var FlexFlux = function () {
      */
     this.flux = function () {
         return this.Flux;
+    };
+
+    /**
+     * Get mixin for watching a store
+     * @param stores
+     * @returns {*}
+     */
+    this.watch = function (stores) {
+        return this.Flux.watch(stores);
     }
 };
 

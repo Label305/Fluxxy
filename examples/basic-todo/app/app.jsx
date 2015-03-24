@@ -55,24 +55,24 @@ var TodoCommands = function (events) {
  * @type {FlexFlux}
  */
 var FlexFlux = require('../../../index');
-var flexFlux = new FlexFlux();
+window.Flux = new FlexFlux();
 
 //Register command collections for certain namespaces
-flexFlux.command('Todo', TodoCommands);
+Flux.command('Todo', TodoCommands);
 
 //Register store
-flexFlux.store('Todo', TodoStore);
+Flux.store('Todo', TodoStore);
 
 /**
  * The component we will be rendering into the DOM
  */
 var React = require('react');
 var TodoApp = React.createClass({
-    mixins: [flexFlux.flux().watch(['Todo'])],
+    mixins: [Flux.watch(['Todo'])],
     getStoreState: function () {
         return {
             todos: this.props.flux.store('Todo').all(),
-            num: this.props.flux.store('Todo').all().length
+            num: this.props.flux.store('Todo').all().length//To show we're actually using this method, not the ref.
         };
     },
     getInitialState: function () {
