@@ -11,11 +11,26 @@ describe('CommandHub', function () {
         //When
         var CommandCollection = function () {
         };
-        var commandCollection = new CommandCollection();
-        commandHub.register('User', commandCollection);
+        commandHub.register('User', CommandCollection);
 
         //Then
-        expect(commandCollection.namespace).to.be('User');
+        //... no crash
+    });
+
+    it('should be able to find a registered command collection', function () {
+        //Given
+        var flexFlux = new FlexFlux();
+        var commandHub = flexFlux.CommandHub;
+
+        //When
+        var CommandCollection = function () {
+            this.foo = 'bar';
+        };
+        commandHub.register('User', CommandCollection);
+        var commandCollection = commandHub.find('User');
+
+        //Then
+        expect(commandCollection.foo).to.be('bar');
     });
 
 });

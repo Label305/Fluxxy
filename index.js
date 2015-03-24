@@ -1,4 +1,5 @@
-var CommandHub = require('./lib/command_hub'),
+var Flux = require('./lib/flux'),
+    CommandHub = require('./lib/command_hub'),
     EventHub = require('./lib/event_hub'),
     StoreHub = require('./lib/store_hub');
 

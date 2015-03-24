@@ -8,13 +8,13 @@ describe('FlexFlux accessor', function () {
         var flexFlux = new FlexFlux();
 
         //When
-        var CommandCollection = function () {
+        var CommandCollection = function (events) {
+            this.foo = 'bar';
         };
-        var commandCollection = new CommandCollection();
-        flexFlux.add('User', commandCollection);
+        var commandCollection = flexFlux.command('User', CommandCollection);
 
         //Then
-        expect(commandCollection.namespace).to.be('User');
+        expect(commandCollection.foo).to.be('bar');
     });
 
 });
