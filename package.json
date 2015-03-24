@@ -10,6 +10,7 @@
   "devDependencies": {
     "mocha": "~2.2.1",
     "expect.js": "~0.3.1",
-    "webpack": "~1.7.3"
+    "webpack": "~1.7.3",
+    "jsx-loader": "~0.12.2"
   }
 }

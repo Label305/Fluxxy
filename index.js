@@ -1,7 +1,14 @@
 var CommandHub = require('./lib/command_hub'),
-    EventHub = require('./lib/event_hub');
+    EventHub = require('./lib/event_hub'),
+    StoreHub = require('./lib/store_hub');
 
 var FlexFlux = function () {
+
+    /**
+     * Here all Fluxy logic happens, to couple Stores with React
+     * @type Flux
+     */
+    this.Flux = new Flux(this);
 
     /**
      * Place for events
@@ -16,30 +23,42 @@ var FlexFlux = function () {
     this.CommandHub = new CommandHub(this.EventHub);
 
     /**
-     * Add a command collection
-     * @param namespace
-     * @param commandCollection
+     * Place for stores
+     * @type {StoreHub}
      */
-    this.add = function (namespace, commandCollection) {
-        this.CommandHub.register(namespace, commandCollection);
+    this.StoreHub = new StoreHub(this.Flux);
+
+    /**
+     * Set/get a commmand collection
+     * @param namespace
+     * @returns CommandCollection
+     */
+    this.command = function (namespace) {
+        if (typeof arguments[1] != 'undefined') {
+            this.CommandHub.register(namespace, arguments[1]);
+        }
+        return this.CommandHub.find(namespace);
     };
 
     /**
-     * Register a new callback for an event
+     * Set/get a store
      * @param namespace
-     * @param eventName
-     * @param callback
-     * @param context (optional)
+     * @returns Store
      */
-    this.on = function (namespace, eventName, callback) {
-        this.EventHub.on(
-            namespace,
-            eventName,
-            callback,
-            typeof arguments[3] == 'undefined' ? {} : arguments[3]
-        );
-    }
+    this.store = function (namespace) {
+        if (typeof arguments[1] != 'undefined') {
+            this.StoreHub.register(namespace, arguments[1]);
+        }
+        return this.StoreHub.find(namespace);
+    };
 
+    /**
+     * Get FlexFlux mixin
+     * @return FlexFluxMixin
+     */
+    this.flux = function () {
+        return this.Flux;
+    }
 };
 
 module.exports = FlexFlux;
