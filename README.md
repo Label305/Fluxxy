@@ -12,12 +12,10 @@ Will be available here in the near future.
 Usage
 ----
 
-So, you've read about the Flux architecture. That means, you know about the corner 
-stones: Actions, Dispatching, Stores and Views. Fluxxy also has those, however to make life easier and more scaleable
-we have mulitple collections of commands instead of a mind bogglingly long list of actions. 
-Which are tied to stores using a namespace.
+So, you've read about the Flux architecture. That means you know about its corner 
+stones: Actions, Dispatching, Stores and Views. Fluxxy also has those, but we've made things more scaleable by using multiple collections of commands which are tied to stores using a namespace.
 
-Example!
+Time for an example:
 
 Commands:
 ```
@@ -77,14 +75,14 @@ Flux.command('Todo', TodoCommands);
 Flux.store('Todo', TodoStore);
 ```
 
-So we have a collection of commands called `TodoCommands`, in this case `add`, which can dispatch an `add` event within the namespace it
-is registered in (i.e. `Todo`, but don't worry there are overrides). Now you have the `TodoStore`, which, after it is constructed,
+We have a collection of commands called `TodoCommands`, in this case `add`, which can dispatch an `add` event within the namespace it
+is registered to (i.e. `Todo`, but don't worry, there are overrides). Now you have the `TodoStore`, which, after it is constructed,
 listens to these events. 
 
-So now data pours into your store, so now you have to manage state there, you get a default `store` object for free 
-where you can dump your state, since you'll always will implement methods such as `all`, or `add`. 
+Now data pours into your store, so you have to manage the state there. We've thrown in a default `store` object for free 
+where you can dump your state, since you'll always implement methods such as `all`, or `add`. 
 
-Only thing left is to get data into you (React) views, by including the a watching Mixin, where you can specify on which
+Only thing left is to get data into your (React) views, by including a watching Mixin, where you can specify which
 stores it should watch.
 
 License
