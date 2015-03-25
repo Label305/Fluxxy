@@ -133,7 +133,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Mixin = __webpack_require__(6);
+	var Mixin = __webpack_require__(5);
 	
 	var Flux = function (fluxxy) {
 	
@@ -200,7 +200,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var EventCollector = __webpack_require__(5);
+	var EventCollector = __webpack_require__(6);
 	
 	var CommandHub = function (eventHub) {
 	
@@ -344,35 +344,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var EventCollector = function (namespace, eventHub) {
-	
-	    /**
-	     * Notify the event collector something happened
-	     * @param eventName
-	     * @param data
-	     */
-	    this.dispatch = function (eventName, data) {
-	        eventHub.dispatch(namespace, eventName, data);
-	    };
-	
-	    /**
-	     * Dispatch for a certain namespace, only for advanced implementations, normally your event collector
-	     * is chosen specifically for you command collection
-	     * @param namespace
-	     * @param eventName
-	     * @param data
-	     */
-	    this.dispatchForNamespace = function (namespace, eventName, data) {
-	        eventHub.dispatch(namespace, eventName, data);
-	    }
-	};
-	
-	module.exports = EventCollector;
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var Mixin = function (flux, stores) {
 	    return {
 	
@@ -405,6 +376,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	module.exports = Mixin;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var EventCollector = function (namespace, eventHub) {
+	
+	    /**
+	     * Notify the event collector something happened
+	     * @param eventName
+	     * @param data
+	     */
+	    this.dispatch = function (eventName, data) {
+	        eventHub.dispatch(namespace, eventName, data);
+	    };
+	
+	    /**
+	     * Dispatch for a certain namespace, only for advanced implementations, normally your event collector
+	     * is chosen specifically for you command collection
+	     * @param namespace
+	     * @param eventName
+	     * @param data
+	     */
+	    this.dispatchForNamespace = function (namespace, eventName, data) {
+	        eventHub.dispatch(namespace, eventName, data);
+	    }
+	};
+	
+	module.exports = EventCollector;
 
 /***/ },
 /* 7 */
