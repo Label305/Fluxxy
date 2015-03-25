@@ -346,7 +346,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var Mixin = function (flux, stores) {
 	    return {
-	        
+	
 	        /**
 	         * Initial state from the store
 	         * @returns {*}
@@ -364,6 +364,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    this.setState(this.getStoreState());
 	                }.bind(this));
 	            }
+	        },
+	
+	        /**
+	         * When store updates we also make sure the latest state is passed
+	         */
+	        componentWillReceiveProps: function () {
+	            this.setState(this.getStoreState());
 	        }
 	    }
 	};
