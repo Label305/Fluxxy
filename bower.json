@@ -1,7 +1,7 @@
 {
   "name": "Fluxxy",
   "main": "build/fluxxy.js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/Label305/Fluxxy",
   "authors": [
     "Joris Blaak <joris@label305.com>"
