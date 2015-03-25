@@ -133,7 +133,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Mixin = __webpack_require__(5);
+	var Mixin = __webpack_require__(6);
 	
 	var Flux = function (fluxxy) {
 	
@@ -200,7 +200,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var EventCollector = __webpack_require__(6);
+	var EventCollector = __webpack_require__(5);
 	
 	var CommandHub = function (eventHub) {
 	
@@ -344,43 +344,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Mixin = function (flux, stores) {
-	    return {
-	
-	        /**
-	         * Initial state from the store
-	         * @returns {*}
-	         */
-	        getInitialState: function () {
-	            return this.getStoreState();
-	        },
-	
-	        /**
-	         * When a component is mounted register
-	         */
-	        componentDidMount: function () {
-	            for (var i in stores) {
-	                flux.onStoreChange(stores[i], function () {
-	                    this.setState(this.getStoreState());
-	                }.bind(this));
-	            }
-	        },
-	
-	        /**
-	         * When store updates we also make sure the latest state is passed
-	         */
-	        componentWillReceiveProps: function () {
-	            this.setState(this.getStoreState());
-	        }
-	    }
-	};
-	
-	module.exports = Mixin;
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var EventCollector = function (namespace, eventHub) {
 	
 	    /**
@@ -405,6 +368,43 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	module.exports = EventCollector;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Mixin = function (flux, stores) {
+	    return {
+	
+	        /**
+	         * Initial state from the store
+	         * @returns {*}
+	         */
+	        getInitialState: function () {
+	            return this.getStoreState(this.props);
+	        },
+	
+	        /**
+	         * When a component is mounted register
+	         */
+	        componentDidMount: function () {
+	            for (var i in stores) {
+	                flux.onStoreChange(stores[i], function () {
+	                    this.setState(this.getStoreState(this.props));
+	                }.bind(this));
+	            }
+	        },
+	
+	        /**
+	         * When store updates we also make sure the latest state is passed
+	         */
+	        componentWillReceiveProps: function (nextProps) {
+	            this.setState(this.getStoreState(nextProps));
+	        }
+	    }
+	};
+	
+	module.exports = Mixin;
 
 /***/ },
 /* 7 */
