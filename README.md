@@ -1,5 +1,6 @@
 Fluxxy
 ====
+[![Build Status](https://travis-ci.org/Label305/Fluxxy.svg?branch=master)](https://travis-ci.org/Label305/Fluxxy)
 
 More beautiful and scalable implementation of the 
 [Flux architecture](http://facebook.github.io/flux/docs/overview.html) for 
