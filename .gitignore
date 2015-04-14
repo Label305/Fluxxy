@@ -1,4 +1,5 @@
 .idea
 node_modules
 examples/basic-todo/app/build.js
-examples/basic-todo/app/build.js.map
+examples/basic-todo/app/build.js.map/
+npm-debug.log

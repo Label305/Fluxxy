@@ -7,8 +7,13 @@ More beautiful and scalable implementation of the
 
 Installation
 ----
-Will be available here in the near future.
 
+Fluxxy can be downloaded as standalone browser build from
+[the GitHub releases page](https://github.com/Label305/Fluxxy/releases) or installed via
+Bower:
+
+    bower install fluxxy
+    
 Usage
 ----
 
@@ -69,7 +74,7 @@ var TodoApp = React.createClass({
 
 Fluxxy!
 ```
-var Fluxxy = require('../../../index');
+var Fluxxy = require('fluxxy');
 window.Flux = new Fluxxy();
 Flux.command('Todo', TodoCommands);
 Flux.store('Todo', TodoStore);
