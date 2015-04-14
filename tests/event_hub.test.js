@@ -56,4 +56,33 @@ describe('EventHub', function () {
         //Then
         expect(foo).to.be('meh');
     });
+
+    it('should maintain context when dispatching to a store', function () {
+        //Given
+        var fluxxy = new Fluxxy();
+        var eventHub = fluxxy.EventHub;
+        var storeHub = fluxxy.StoreHub;
+
+        var UserStore = function (store) {
+            this.construct = function (events) {
+                events.on('User', 'add', this.setFoo);
+            };
+            this.setFoo = function (data) {
+                this.propagateVal(data.val);
+            };
+            this.propagateVal = function (val) {
+                this.foo = val;
+            };
+            this.foo = 'bar';
+        };
+
+        //When
+        storeHub.register('User', UserStore);
+        eventHub.dispatch('User', 'add', {
+            val: 'foo'
+        });
+
+        //Then
+        expect(storeHub.find('User').foo).to.be('foo');
+    });
 });
