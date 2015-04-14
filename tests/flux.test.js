@@ -67,5 +67,5 @@ describe('Flux', function () {
         //Then
         expect(dataInState.foo).to.be('blub');
     });
-
+    
 });
