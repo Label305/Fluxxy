@@ -1,12 +1,13 @@
 var Flux = require('./lib/flux'),
     CommandHub = require('./lib/command_hub'),
     EventHub = require('./lib/event_hub'),
-    StoreHub = require('./lib/store_hub');
+    StoreHub = require('./lib/store_hub'),
+    Mixin = require('./lib/mixin');
 
 var Fluxxy = function () {
 
     /**
-     * Here all Fluxy logic happens, to couple Stores with React
+     * Here all Fluxxy logic happens, to couple Stores with React
      * @type Flux
      */
     this.Flux = new Flux(this);
@@ -61,14 +62,16 @@ var Fluxxy = function () {
         return this.Flux;
     };
 
-    /**
-     * Get mixin for watching a store
-     * @param stores
-     * @returns {*}
-     */
-    this.watch = function (stores) {
-        return this.Flux.watch(stores);
-    }
+};
+
+
+/**
+ * Get mixin for watching a store
+ * @param stores
+ * @returns Mixin
+ */
+Fluxxy.watch = function (stores) {
+    return new Mixin(stores);
 };
 
 module.exports = Fluxxy;

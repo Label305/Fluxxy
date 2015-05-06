@@ -57,12 +57,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Flux = __webpack_require__(1),
 	    CommandHub = __webpack_require__(2),
 	    EventHub = __webpack_require__(3),
-	    StoreHub = __webpack_require__(4);
+	    StoreHub = __webpack_require__(4),
+	    Mixin = __webpack_require__(5);
 	
 	var Fluxxy = function () {
 	
 	    /**
-	     * Here all Fluxy logic happens, to couple Stores with React
+	     * Here all Fluxxy logic happens, to couple Stores with React
 	     * @type Flux
 	     */
 	    this.Flux = new Flux(this);
@@ -117,14 +118,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return this.Flux;
 	    };
 	
-	    /**
-	     * Get mixin for watching a store
-	     * @param stores
-	     * @returns {*}
-	     */
-	    this.watch = function (stores) {
-	        return this.Flux.watch(stores);
-	    }
+	};
+	
+	
+	/**
+	 * Get mixin for watching a store
+	 * @param stores
+	 * @returns Mixin
+	 */
+	Fluxxy.watch = function (stores) {
+	    return new Mixin(stores);
 	};
 	
 	module.exports = Fluxxy;
@@ -133,8 +136,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Mixin = __webpack_require__(5);
-	
 	var Flux = function (fluxxy) {
 	
 	    /**
@@ -155,16 +156,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            callback: callback,
 	            context: context
 	        });
-	    };
-	
-	    /**
-	     * Returns the Mixin that allows for watching
-	     * @param stores
-	     */
-	    this.watch = function (stores) {
-	        var mixin = new Mixin(fluxxy.flux(), stores);
-	        mixin.stores = stores;
-	        return mixin;
 	    };
 	
 	    /**
@@ -360,8 +351,16 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Mixin = function (flux, stores) {
+	var Mixin = function (stores) {
 	    return {
+	
+	        /**
+	         * Get watched stores
+	         * @returns array
+	         */
+	        getWatchedStores: function () {
+	            return typeof stores == 'object' ? stores : [stores];
+	        },
 	
 	        /**
 	         * Initial state from the store
@@ -372,11 +371,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	        },
 	
 	        /**
+	         * Get the flux instance
+	         * @returns Flux
+	         */
+	        getFlux: function () {
+	            return this.props.flux;
+	        },
+	
+	        /**
 	         * When a component is mounted register
 	         */
 	        componentDidMount: function () {
+	            var stores = this.getWatchedStores();
 	            for (var i in stores) {
-	                flux.onStoreChange(stores[i], function () {
+	                this.getFlux().onStoreChange(stores[i], function () {
 	                    this.setState(this.getStoreState(this.props));
 	                }.bind(this));
 	            }

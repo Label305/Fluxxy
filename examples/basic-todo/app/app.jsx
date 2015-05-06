@@ -6,6 +6,12 @@
 var TodoStore = function (store) {
 
     /**
+     * Index to be able to set unique key
+     * @type integer
+     */
+    var index = 0;
+
+    /**
      * Register to events
      * @param events
      */
@@ -18,6 +24,7 @@ var TodoStore = function (store) {
      * @param newTodo
      */
     this.add = function (newTodo) {
+        newTodo.id = ++index;
         store.add(newTodo);
         store.changed();
     };
@@ -55,20 +62,20 @@ var TodoCommands = function (events) {
  * @type {Fluxxy}
  */
 var Fluxxy = require('../../../index');
-window.Flux = new Fluxxy();
+var flux = new Fluxxy();
 
 //Register command collections for certain namespaces
-Flux.command('Todo', TodoCommands);
+flux.command('Todo', TodoCommands);
 
 //Register store
-Flux.store('Todo', TodoStore);
+flux.store('Todo', TodoStore);
 
 /**
  * The component we will be rendering into the DOM
  */
 var React = require('react');
 var TodoApp = React.createClass({
-    mixins: [Flux.watch(['Todo'])],
+    mixins: [Fluxxy.watch(['Todo'])],
     getStoreState: function () {
         return {
             todos: this.props.flux.store('Todo').all(),
@@ -96,7 +103,7 @@ var TodoApp = React.createClass({
     },
     render: function () {
         var todos = this.state.todos.map(function (todo) {
-            return <li>{todo.content}</li>;
+            return <li key={todo.id}>{todo.content}</li>;
         });
         return <div>
             <h1>{'Todo (' + this.state.num + ')'}</h1>
@@ -110,4 +117,4 @@ var TodoApp = React.createClass({
 });
 
 //Pass flux to the component
-React.render(<TodoApp flux={Flux.flux()} />, document.getElementById("app"));
+React.render(<TodoApp flux={flux.flux()} />, document.getElementById("app"));
