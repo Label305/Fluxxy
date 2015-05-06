@@ -1,5 +1,13 @@
 language: node_js
 node_js:
-  - "0.12"
-  - "0.11"
-  - "0.10"
+- '0.12'
+- '0.11'
+- '0.10'
+deploy:
+  provider: npm
+  email: joris@label305.com
+  api_key:
+    secure: e1PpI8keFB6/eM5scZhwaImAst0pgVNp7WaP4Bv1XZ//XBLvEpB8yrEdNuaefiNV+vQxv+kFoTULqxEAX7Zl488+XrANJXgAkudsrC3z/+akbHyWRBujekLiIt2xLx9vU2LTLs4CW5F4sk2ihEYjjnRu2brnzYCGCshqg4xuiAs=
+  on:
+    tags: true
+    repo: Label305/Fluxxy
