@@ -57,7 +57,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Flux = __webpack_require__(1),
 	    CommandHub = __webpack_require__(2),
 	    EventHub = __webpack_require__(3),
-	    StoreHub = __webpack_require__(4);
+	    StoreHub = __webpack_require__(4),
+	    Mixin = __webpack_require__(5);
 	
 	var Fluxxy = function () {
 	
@@ -117,14 +118,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return this.Flux;
 	    };
 	
-	    /**
-	     * Get mixin for watching a store
-	     * @param stores
-	     * @returns {*}
-	     */
-	    this.watch = function (stores) {
-	        return this.Flux.watch(stores);
-	    }
+	};
+	
+	
+	/**
+	 * Get mixin for watching a store
+	 * @param stores
+	 * @returns Mixin
+	 */
+	Fluxxy.watch = function (stores) {
+	    return new Mixin(stores);
 	};
 	
 	module.exports = Fluxxy;
@@ -133,8 +136,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Mixin = __webpack_require__(5);
-	
 	var Flux = function (fluxxy) {
 	
 	    /**
@@ -155,17 +156,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            callback: callback,
 	            context: context
 	        });
-	    };
-	
-	    /**
-	     * Returns the Mixin that allows for watching
-	     * @param stores
-	     * @return Mixin
-	     */
-	    this.watch = function (stores) {
-	        var mixin = new Mixin(stores);
-	        mixin.stores = stores;
-	        return mixin;
 	    };
 	
 	    /**
@@ -201,7 +191,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var EventCollector = __webpack_require__(7);
+	var EventCollector = __webpack_require__(6);
 	
 	var CommandHub = function (eventHub) {
 	
@@ -305,7 +295,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Store = __webpack_require__(6);
+	var Store = __webpack_require__(7);
 	
 	var StoreHub = function (flux, eventHub) {
 	
@@ -365,6 +355,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return {
 	
 	        /**
+	         * Get watched stores
+	         * @returns array
+	         */
+	        getWatchedStores: function () {
+	            return typeof stores == 'object' ? stores : [stores];
+	        },
+	
+	        /**
 	         * Initial state from the store
 	         * @returns {*}
 	         */
@@ -384,6 +382,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * When a component is mounted register
 	         */
 	        componentDidMount: function () {
+	            var stores = this.getWatchedStores();
 	            for (var i in stores) {
 	                this.getFlux().onStoreChange(stores[i], function () {
 	                    this.setState(this.getStoreState(this.props));
@@ -404,6 +403,35 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var EventCollector = function (namespace, eventHub) {
+	
+	    /**
+	     * Notify the event collector something happened
+	     * @param eventName
+	     * @param data
+	     */
+	    this.dispatch = function (eventName, data) {
+	        eventHub.dispatch(namespace, eventName, data);
+	    };
+	
+	    /**
+	     * Dispatch for a certain namespace, only for advanced implementations, normally your event collector
+	     * is chosen specifically for you command collection
+	     * @param namespace
+	     * @param eventName
+	     * @param data
+	     */
+	    this.dispatchForNamespace = function (namespace, eventName, data) {
+	        eventHub.dispatch(namespace, eventName, data);
+	    }
+	};
+	
+	module.exports = EventCollector;
+
+/***/ },
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = function (namespace, flux) {
@@ -507,35 +535,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	module.exports = Store;
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var EventCollector = function (namespace, eventHub) {
-	
-	    /**
-	     * Notify the event collector something happened
-	     * @param eventName
-	     * @param data
-	     */
-	    this.dispatch = function (eventName, data) {
-	        eventHub.dispatch(namespace, eventName, data);
-	    };
-	
-	    /**
-	     * Dispatch for a certain namespace, only for advanced implementations, normally your event collector
-	     * is chosen specifically for you command collection
-	     * @param namespace
-	     * @param eventName
-	     * @param data
-	     */
-	    this.dispatchForNamespace = function (namespace, eventName, data) {
-	        eventHub.dispatch(namespace, eventName, data);
-	    }
-	};
-	
-	module.exports = EventCollector;
 
 /***/ }
 /******/ ])
