@@ -50,8 +50,9 @@ var TodoStore = function (store) {
 
 React:
 ```
+var Fluxxy = require('fluxxy');
 var TodoApp = React.createClass({
-    mixins: [Flux.watch(['Todo'])],
+    mixins: [Fluxxy.watch(['Todo'])],
     getStoreState: function () {
         return {
             todos: this.props.flux.store('Todo').all()
@@ -76,9 +77,9 @@ var TodoApp = React.createClass({
 Fluxxy!
 ```
 var Fluxxy = require('fluxxy');
-window.Flux = new Fluxxy();
-Flux.command('Todo', TodoCommands);
-Flux.store('Todo', TodoStore);
+var fluxxy = new Fluxxy();
+fluxxy.command('Todo', TodoCommands);
+fluxxy.store('Todo', TodoStore);
 ```
 
 We have a collection of commands called `TodoCommands`, in this case `add`, which can dispatch an `add` event within the namespace it
@@ -90,6 +91,18 @@ where you can dump your state, since you'll always implement methods such as `al
 
 Only thing left is to get data into your (React) views, by including a watching Mixin, where you can specify which
 stores it should watch.
+
+Drafting a release
+---------
+
+When drafting a new release we want to pack our repo so people on the web will be able to use it. For this we use Webpack.
+So you'll have to run the following commands:
+
+```
+./node_modules/.bin/webpack
+cd examples/basic-todo
+../../node_modules/.bin/webpack
+```
 
 License
 ---------
