@@ -74,4 +74,10 @@ Fluxxy.watch = function (stores) {
     return new Mixin(stores);
 };
 
+/**
+ * When implementing loading logic this is a helper string
+ * @type string
+ */
+Fluxxy.LOADING = '*fluxxy-loading-tag*';
+
 module.exports = Fluxxy;

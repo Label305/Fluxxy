@@ -130,6 +130,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return new Mixin(stores);
 	};
 	
+	/**
+	 * When implementing loading logic this is a helper string
+	 * @type string
+	 */
+	Fluxxy.LOADING = '*fluxxy-loading-tag*';
+	
 	module.exports = Fluxxy;
 
 /***/ },
@@ -362,12 +368,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return typeof stores == 'object' ? stores : [stores];
 	        },
 	
+	        _getStoreState: function (props) {
+	            return typeof this.getStoreState != 'undefined' ? this.getStoreState(props) : {};
+	        },
+	
 	        /**
 	         * Initial state from the store
 	         * @returns {*}
 	         */
 	        getInitialState: function () {
-	            return this.getStoreState(this.props);
+	            return this._getStoreState(this.props);
 	        },
 	
 	        /**
@@ -385,7 +395,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var stores = this.getWatchedStores();
 	            for (var i in stores) {
 	                this.getFlux().onStoreChange(stores[i], function () {
-	                    this.setState(this.getStoreState(this.props));
+	                    this.setState(this._getStoreState(this.props));
 	                }.bind(this));
 	            }
 	        },
@@ -394,7 +404,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * When store updates we also make sure the latest state is passed
 	         */
 	        componentWillReceiveProps: function (nextProps) {
-	            this.setState(this.getStoreState(nextProps));
+	            this.setState(this._getStoreState(nextProps));
 	        }
 	    }
 	};
@@ -447,6 +457,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @type {string}
 	     */
 	    var indexKey = 'id';
+	
+	    /**
+	     * Accessor for flux
+	     * @returns Flux
+	     */
+	    this.flux = function() {
+	        return flux;  
+	    };
 	
 	    /**
 	     * Set the key which marks the index of the objects
@@ -531,7 +549,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    this.changed = function () {
 	        flux._changed(namespace);
-	    }
+	    };
+	    
 	};
 	
 	module.exports = Store;
