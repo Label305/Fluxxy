@@ -57,6 +57,53 @@ describe('EventHub', function () {
         expect(foo).to.be('meh');
     });
 
+    it('should not dispatch while another is dispatching', function () {
+
+        //Given
+        var fluxxy = new Fluxxy();
+        var eventHub = fluxxy.EventHub;
+
+        var foo = 'meh';
+        eventHub.on('User', 'add', function (data) {
+            foo = 'A';
+            //Dispatch inside another
+            eventHub.dispatch('User', 'update', {});
+        });
+        eventHub.on('User', 'update', function (data) {
+            foo = 'B';
+        });
+
+        //When
+        eventHub.dispatch('User', 'add', {});
+
+        //Then
+        expect(foo).to.be('A');
+    });
+
+    it('should reset dispatching state when eventually finished', function () {
+
+        //Given
+        var fluxxy = new Fluxxy();
+        var eventHub = fluxxy.EventHub;
+
+        var foo = 'meh';
+        eventHub.on('User', 'add', function (data) {
+            foo = 'A';
+            //Dispatch inside another
+            eventHub.dispatch('User', 'update', {});
+        });
+        eventHub.on('User', 'update', function (data) {
+            foo = 'B';
+        });
+
+        //When
+        eventHub.dispatch('User', 'add', {});
+        eventHub.dispatch('User', 'update', {});
+
+        //Then
+        expect(foo).to.be('B');
+    });
+
     it('should maintain context when dispatching to a store', function () {
         //Given
         var fluxxy = new Fluxxy();
