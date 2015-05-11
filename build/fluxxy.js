@@ -261,12 +261,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var callbacks = [];
 	
 	    /**
+	     * If we're currently dispatching
+	     * @type {boolean}
+	     */
+	    var dispatching = false;
+	
+	    /**
 	     * Notify about an event
 	     * @param namespace
 	     * @param eventName
 	     * @param data
 	     */
 	    this.dispatch = function (namespace, eventName, data) {
+	        if (dispatching) {
+	            console.error('You tried to dispatch ' + namespace + '.' + eventName + ' while we\'re dispatching another event, this is not allowed');
+	            return;
+	        }
+	        dispatching = true;
 	        for (var i in callbacks) {
 	            if (
 	                callbacks[i].namespace == namespace
@@ -275,6 +286,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                callbacks[i].callback.apply(callbacks[i].context, [data]);
 	            }
 	        }
+	        dispatching = false;
 	    };
 	
 	    /**
