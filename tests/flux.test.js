@@ -80,5 +80,15 @@ describe('Flux', function () {
         //Then
         expect(dataInState.foo).to.be('blub');
     });
+    
+    it('should work with ES6 React classes', function() {
+        
+        if(typeof "foo".startsWith == 'undefined') {
+            console.log('No ES6 environment');
+            return;
+        }
+        
+        
+    });
 
 });
