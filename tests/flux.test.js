@@ -1,3 +1,5 @@
+"use strict"
+
 var Fluxxy = require('../');
 
 var expect = require('expect.js');
@@ -88,6 +90,10 @@ describe('Flux', function () {
             return;
         }
         
+        var React  = require('react');
+        class Comment extends React.Component {
+            
+        }
         
     });
 
