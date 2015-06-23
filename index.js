@@ -64,7 +64,6 @@ var Fluxxy = function () {
 
 };
 
-
 /**
  * Get mixin for watching a store
  * @param stores
@@ -76,6 +75,13 @@ Fluxxy.watch = function (stores) {
     mixin.construct();
     return mixin;
 };
+
+/**
+ * ES6 parent classese
+ */
+if (typeof "foo".startsWith != 'undefined') {
+    Fluxxy.Store = require('./lib/es6/store.js');
+}
 
 /**
  * When implementing loading logic this is a helper string
