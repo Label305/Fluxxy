@@ -15,17 +15,13 @@ class Comment extends React.Component {
         this.props.spy(this.state);
     }
 
-    getStoreState() {
-        return {
-            foo: 'bla'
-        }
+    setState(state) {
+        this.state = state;
+        this.propagateStateToSpy();
     }
 
-    componentDidUpdate() {
-        var state = {
-            foo: 'blub'
-        };
-        this.props.spy(state);
+    getStoreState() {
+        return this.props.flux.store('User').getSome();
     }
 
     render() {

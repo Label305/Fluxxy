@@ -96,10 +96,17 @@ describe('Flux', function () {
 
         //Register a store that will tell us it has changed
         var UserStore = function (store) {
+            this.val = 'bla';
             this.construct = function () {
             };
             this.add = function () {
+                this.val = 'blub';
                 store.changed();
+            };
+            this.getSome = function () {
+                return {
+                    foo: this.val
+                }
             }
         };
         fluxxy.store('User', UserStore);
@@ -119,36 +126,40 @@ describe('Flux', function () {
         );
         React.addons.TestUtils.createRenderer().render(element);
 
-        //When
-        fluxxy.store('User').add();
-
         //Then
         expect(state.foo).to.be('bla');
 
     });
-    
-    
+
+
     it('should work with ES6 React classes', function () {
-    
+
         //Check if event 
         if (typeof "foo".startsWith == 'undefined') {
             console.log('No ES6 environment');
             return;
         }
-    
+
         //Given
         var fluxxy = new Fluxxy();
-    
+
         //Register a store that will tell us it has changed
         var UserStore = function (store) {
+            this.val = 'bla';
             this.construct = function () {
             };
             this.add = function () {
+                this.val = 'blub';
                 store.changed();
+            };
+            this.getSome = function () {
+                return {
+                    foo: this.val
+                }
             }
         };
         fluxxy.store('User', UserStore);
-    
+
         //Create a component that will listen to a store
         var Comment = require('./es6/comment.react');
         var state = {
@@ -163,14 +174,15 @@ describe('Flux', function () {
                 }
             }
         );
-        React.addons.TestUtils.createRenderer().render(element);
-       
+        var renderer = React.addons.TestUtils.createRenderer();
+        renderer.render(element);
+
         //When
         fluxxy.store('User').add();
-    
+
         //Then
         expect(state.foo).to.be('blub');
-    
+
     });
 
 });
