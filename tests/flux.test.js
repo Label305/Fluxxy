@@ -86,7 +86,7 @@ describe('Flux', function () {
     it('should set initial state in ES6 class', function () {
 
         //Check if event 
-        if (typeof "foo".startsWith == 'undefined') {
+        if ('function' !== typeof Map) {
             console.log('No ES6 environment');
             return;
         }
@@ -135,7 +135,7 @@ describe('Flux', function () {
     it('should work with ES6 React classes', function () {
 
         //Check if event 
-        if (typeof "foo".startsWith == 'undefined') {
+        if ('function' !== typeof Map) {
             console.log('No ES6 environment');
             return;
         }
