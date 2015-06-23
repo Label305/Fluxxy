@@ -1,6 +1,7 @@
 var Fluxxy = require('../');
-
+var React = require('react/addons');
 var expect = require('expect.js');
+
 describe('Flux', function () {
 
     it('should set the stores', function () {
@@ -14,8 +15,8 @@ describe('Flux', function () {
         expect(m.getWatchedStores().length).to.be(1);
         expect(m.getWatchedStores()[0]).to.be('User');
     });
-    
-    it('should be able to set a single store', function() {
+
+    it('should be able to set a single store', function () {
         //Given
         var fluxxy = new Fluxxy();
 
@@ -41,7 +42,7 @@ describe('Flux', function () {
         expect(secondMixin.getWatchedStores().length).to.be(1);
         expect(secondMixin.getWatchedStores()[0]).to.be('Team');
     });
-    
+
     it('should set the state fetched from `getStoreState`', function () {
         //Given
         var fluxxy = new Fluxxy();
@@ -80,16 +81,96 @@ describe('Flux', function () {
         //Then
         expect(dataInState.foo).to.be('blub');
     });
-    
-    it('should work with ES6 React classes', function() {
-        
-        if(typeof "foo".startsWith == 'undefined') {
+
+
+    it('should set initial state in ES6 class', function () {
+
+        //Check if event 
+        if (typeof "foo".startsWith == 'undefined') {
             console.log('No ES6 environment');
             return;
         }
-        
+
+        //Given
+        var fluxxy = new Fluxxy();
+
+        //Register a store that will tell us it has changed
+        var UserStore = function (store) {
+            this.construct = function () {
+            };
+            this.add = function () {
+                store.changed();
+            }
+        };
+        fluxxy.store('User', UserStore);
+
         var Comment = require('./es6/comment.react');
+        var state = {
+            foo: 'bar'
+        };
+        var element = React.createElement(
+            Comment,
+            {
+                flux: fluxxy.flux(),
+                spy: function (newState) {
+                    state = newState;
+                }
+            }
+        );
+        React.addons.TestUtils.createRenderer().render(element);
+
+        //When
+        fluxxy.store('User').add();
+
+        //Then
+        expect(state.foo).to.be('bla');
+
+    });
+    
+    
+    it('should work with ES6 React classes', function () {
+    
+        //Check if event 
+        if (typeof "foo".startsWith == 'undefined') {
+            console.log('No ES6 environment');
+            return;
+        }
+    
+        //Given
+        var fluxxy = new Fluxxy();
+    
+        //Register a store that will tell us it has changed
+        var UserStore = function (store) {
+            this.construct = function () {
+            };
+            this.add = function () {
+                store.changed();
+            }
+        };
+        fluxxy.store('User', UserStore);
+    
+        //Create a component that will listen to a store
+        var Comment = require('./es6/comment.react');
+        var state = {
+            foo: 'bar'
+        };
+        var element = React.createElement(
+            Comment,
+            {
+                flux: fluxxy.flux(),
+                spy: function (newState) {
+                    state = newState;
+                }
+            }
+        );
+        React.addons.TestUtils.createRenderer().render(element);
        
+        //When
+        fluxxy.store('User').add();
+    
+        //Then
+        expect(state.foo).to.be('blub');
+    
     });
 
 });

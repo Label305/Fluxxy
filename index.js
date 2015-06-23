@@ -71,7 +71,10 @@ var Fluxxy = function () {
  * @returns Mixin
  */
 Fluxxy.watch = function (stores) {
-    return new Mixin(stores);
+    var component = typeof arguments[1] != 'undefined' ? arguments[1] : null;
+    var mixin = new Mixin(stores, component);
+    mixin.construct();
+    return mixin;
 };
 
 /**
