@@ -127,7 +127,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @returns Mixin
 	 */
 	Fluxxy.watch = function (stores) {
-	    return new Mixin(stores);
+	    var component = typeof arguments[1] != 'undefined' ? arguments[1] : null;
+	    var mixin = new Mixin(stores, component);
+	    mixin.construct();
+	    return mixin;
 	};
 	
 	/**
@@ -197,7 +200,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var EventCollector = __webpack_require__(6);
+	var EventCollector = __webpack_require__(7);
 	
 	var CommandHub = function (eventHub) {
 	
@@ -261,12 +264,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var callbacks = [];
 	
 	    /**
+	     * If we're currently dispatching
+	     * @type {boolean}
+	     */
+	    var dispatching = false;
+	
+	    /**
 	     * Notify about an event
 	     * @param namespace
 	     * @param eventName
 	     * @param data
 	     */
 	    this.dispatch = function (namespace, eventName, data) {
+	        if (dispatching) {
+	            console.error('You tried to dispatch ' + namespace + '.' + eventName + ' while we\'re dispatching another event, this is not allowed');
+	            return;
+	        }
+	        dispatching = true;
 	        for (var i in callbacks) {
 	            if (
 	                callbacks[i].namespace == namespace
@@ -275,6 +289,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                callbacks[i].callback.apply(callbacks[i].context, [data]);
 	            }
 	        }
+	        dispatching = false;
 	    };
 	
 	    /**
@@ -301,7 +316,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Store = __webpack_require__(7);
+	var Store = __webpack_require__(6);
 	
 	var StoreHub = function (flux, eventHub) {
 	
@@ -357,8 +372,24 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Mixin = function (stores) {
+	var Mixin = function (stores, component) {
+	
 	    return {
+	
+	        construct: function () {
+	            if (component != null) {
+	                component.state = this.getInitialState();
+	                this._registerListenerWithComponent();
+	            }
+	        },
+	
+	        /**
+	         * When we're in a traditional mixin, we can access the component through `this.getContext()` however, in ES6 the
+	         * "mixin" is explicitly passed
+	         */
+	        getContext: function () {
+	            return component != null ? component : this;
+	        },
 	
 	        /**
 	         * Get watched stores
@@ -368,8 +399,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return typeof stores == 'object' ? stores : [stores];
 	        },
 	
+	        /**
+	         * Get store state
+	         * @param props
+	         * @returns {}
+	         * @private
+	         */
 	        _getStoreState: function (props) {
-	            return typeof this.getStoreState != 'undefined' ? this.getStoreState(props) : {};
+	            return typeof this.getContext().getStoreState != 'undefined' ? this.getContext().getStoreState(props) : {};
 	        },
 	
 	        /**
@@ -377,7 +414,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @returns {*}
 	         */
 	        getInitialState: function () {
-	            return this._getStoreState(this.props);
+	            return this._getStoreState(this.getContext().props);
 	        },
 	
 	        /**
@@ -385,26 +422,41 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @returns Flux
 	         */
 	        getFlux: function () {
-	            return this.props.flux;
+	            return this.getContext().props.flux;
+	        },
+	
+	        /**
+	         * Touch the state
+	         * @private
+	         */
+	        _touch: function () {
+	            var props = this.getContext().props;
+	            var state = this._getStoreState(props);
+	            this.getContext().setState(state);
+	        },
+	
+	        /**
+	         * Will make sure that the component is listening on the store
+	         * @private
+	         */
+	        _registerListenerWithComponent: function () {
+	            this.getWatchedStores().forEach(function (store) {
+	                this.getFlux().onStoreChange(store, this._touch.bind(this));
+	            }.bind(this));
 	        },
 	
 	        /**
 	         * When a component is mounted register
 	         */
 	        componentDidMount: function () {
-	            var stores = this.getWatchedStores();
-	            for (var i in stores) {
-	                this.getFlux().onStoreChange(stores[i], function () {
-	                    this.setState(this._getStoreState(this.props));
-	                }.bind(this));
-	            }
+	            this._registerListenerWithComponent();
 	        },
 	
 	        /**
 	         * When store updates we also make sure the latest state is passed
 	         */
 	        componentWillReceiveProps: function (nextProps) {
-	            this.setState(this._getStoreState(nextProps));
+	            this.getContext().setState(this._getStoreState(nextProps));
 	        }
 	    }
 	};
@@ -413,35 +465,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var EventCollector = function (namespace, eventHub) {
-	
-	    /**
-	     * Notify the event collector something happened
-	     * @param eventName
-	     * @param data
-	     */
-	    this.dispatch = function (eventName, data) {
-	        eventHub.dispatch(namespace, eventName, data);
-	    };
-	
-	    /**
-	     * Dispatch for a certain namespace, only for advanced implementations, normally your event collector
-	     * is chosen specifically for you command collection
-	     * @param namespace
-	     * @param eventName
-	     * @param data
-	     */
-	    this.dispatchForNamespace = function (namespace, eventName, data) {
-	        eventHub.dispatch(namespace, eventName, data);
-	    }
-	};
-	
-	module.exports = EventCollector;
-
-/***/ },
-/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = function (namespace, flux) {
@@ -554,6 +577,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	module.exports = Store;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var EventCollector = function (namespace, eventHub) {
+	
+	    /**
+	     * Notify the event collector something happened
+	     * @param eventName
+	     * @param data
+	     */
+	    this.dispatch = function (eventName, data) {
+	        eventHub.dispatch(namespace, eventName, data);
+	    };
+	
+	    /**
+	     * Dispatch for a certain namespace, only for advanced implementations, normally your event collector
+	     * is chosen specifically for you command collection
+	     * @param namespace
+	     * @param eventName
+	     * @param data
+	     */
+	    this.dispatchForNamespace = function (namespace, eventName, data) {
+	        eventHub.dispatch(namespace, eventName, data);
+	    }
+	};
+	
+	module.exports = EventCollector;
 
 /***/ }
 /******/ ])
