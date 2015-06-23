@@ -15,6 +15,10 @@ Bower:
 
     bower install fluxxy
     
+Or npm:
+
+    npm install fluxxy 
+    
 Usage
 ----
 
