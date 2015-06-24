@@ -120,7 +120,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	};
 	
-	
 	/**
 	 * Get mixin for watching a store
 	 * @param stores
@@ -329,19 +328,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @returns toBeAddedStore
 	     */
 	    function initializeStore(namespace, toBeAddedStore) {
+	        var events = new function () {
+	            this.on = function (namespace, eventName, callback) {
+	                eventHub.on(namespace, eventName, callback, initializedStore);
+	            }
+	        };
 	
 	        //Initialize a helper store
 	        var store = new Store(namespace, flux);
 	
 	        //Initiate the to be added store
-	        var initializedStore = new toBeAddedStore(store);
+	        var initializedStore = new toBeAddedStore(store, events);
 	
 	        //Push a function that implements the `on` method, however will pass the store as context to the actual eventHub
-	        initializedStore.construct(new function () {
-	            this.on = function (namespace, eventName, callback) {
-	                eventHub.on(namespace, eventName, callback, initializedStore);
-	            }
-	        });
+	        if (typeof initializedStore.construct != 'undefined') {
+	            initializedStore.construct(events);
+	        }
+	
 	        return initializedStore;
 	    }
 	
@@ -480,6 +483,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @type {string}
 	     */
 	    var indexKey = 'id';
+	
+	    /**
+	     * Getter for namespace
+	     * @returns string
+	     */
+	    this.namespace = function() {
+	        return namespace;
+	    };
 	
 	    /**
 	     * Accessor for flux
