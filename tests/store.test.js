@@ -222,5 +222,23 @@ describe('Helper store', function () {
         expect(size).to.be(2);
     });
 
+    it('should provide an ES6 interface', function () {
+        if (typeof "foo".startsWith == 'undefined') {
+            console.log('No ES6 environment');
+            return;
+        }
+
+        //Given
+        var ExampleStore = require('./es6/example_store.js');
+
+        var fluxxy = new Fluxxy();
+
+        //When
+        fluxxy.store('User', ExampleStore);
+
+        //Then
+        expect(fluxxy.store('User').store.namespace()).to.be('User');
+
+    });
 
 });

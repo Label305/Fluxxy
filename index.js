@@ -64,7 +64,6 @@ var Fluxxy = function () {
 
 };
 
-
 /**
  * Get mixin for watching a store
  * @param stores
