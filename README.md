@@ -96,7 +96,7 @@ where you can dump your state, since you'll always implement methods such as `al
 Only thing left is to get data into your (React) views, by including a watching Mixin, where you can specify which
 stores it should watch.
 
-ES6 React
+ES6
 --------
 
 Since the ES6 classes of React do not have mixins we need another solution. You'll just have to register your component
@@ -110,6 +110,35 @@ class Comment extends React.Component {
     }
 }
 ``` 
+
+Both stores and command hubs will also work in an ES6 environment:
+
+```
+class UserStore {
+    constructor(store, events) {
+        this.store = store;
+        events.on('User', 'add', this.add);
+    }
+    add(user) {
+        this.store.addOrUpdate(user);
+    }  
+} 
+```
+
+or a command hub:
+
+```
+class UserCommands {
+    constructor(events) {
+        this.events = events; 
+    }
+    add(user) {
+        this.events.dispatch('add', {
+            user: user
+        });
+    }
+}
+```
 
 Drafting a release
 ---------
