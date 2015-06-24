@@ -77,13 +77,6 @@ Fluxxy.watch = function (stores) {
 };
 
 /**
- * ES6 parent classese
- */
-if (typeof "foo".startsWith != 'undefined') {
-    Fluxxy.Store = require('./lib/es6/store.js');
-}
-
-/**
  * When implementing loading logic this is a helper string
  * @type string
  */

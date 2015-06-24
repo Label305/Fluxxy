@@ -33,4 +33,23 @@ describe('CommandHub', function () {
         expect(commandCollection.foo).to.be('bar');
     });
 
+    it('should work with an es6 class', function () {
+        //Given
+        if (typeof "foo".startsWith == 'undefined') {
+            console.log('No ES6 environment');
+            return;
+        }
+
+        var fluxxy = new Fluxxy();
+        var CommandHub = require('./es6/example_command_hub.js');
+
+        //When
+        fluxxy.command('User', CommandHub);
+        var commandHub = fluxxy.command('User');
+
+        //Then
+        expect(commandHub.events).not.to.be(undefined);
+        expect(commandHub.events.dispatch).not.to.be(undefined);
+    });
+
 });
