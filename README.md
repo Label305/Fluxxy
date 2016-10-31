@@ -6,6 +6,10 @@ More beautiful and scalable implementation of the
 [Flux architecture](http://facebook.github.io/flux/docs/overview.html) for 
 [React](http://facebook.github.io/react/) applications.
 
+__No maintenance intended__
+
+This project is no longer actively maintained. It does its job, but there are no plans to extend or change it. We suggest you use another Flux implementation such as [Redux](https://github.com/reactjs/redux)
+
 Installation
 ----
 
